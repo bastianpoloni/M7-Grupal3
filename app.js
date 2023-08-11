@@ -38,16 +38,22 @@ app.post ('/usuario', async (req, res) => {
     
 });
 
+
 app.post ('/login', async (req, res) => {
     try {
-        const email = req.body.loginEmail;
-        const password = req.body.loginPassword;
+        const email = req.body.email;
+        const password = req.body.password;
+        
+        console.log(req.body.email);
+        console.log(req.body.password);
+        
         const usuario = await pool.query('SELECT * FROM usuarios WHERE email = $1 AND password = $2', [email, password]);
+        
         if (usuario.rowCount > 0){ 
             console.log("Usuario encontrado");
-            res.json(usuario.rows);
+            res.send(usuario.rows[0]);
         } else {
-            res.status(404).send('Usuario no encontrado');
+            res.status(404).send("");
         }
         
     } catch (error){
